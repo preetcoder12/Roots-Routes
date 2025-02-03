@@ -1,16 +1,20 @@
-const sessiontoUser = new Map(); // Make sure Map is capitalized
+const jwt = require("jsonwebtoken");
+const secret = "Preet@12345";
 
-// Store user data with a unique session ID
-async function setUser(id, user) {
-    sessiontoUser.set(id, user);
+function setUser(id, user) {
+    return jwt.sign(
+        { _id: id, email: user.email, roles: user.roles },
+        secret,
+        { expiresIn: "1h" }
+    );
 }
 
-// Get user data using the session ID
-async function getUser(id) {
-    return sessiontoUser.get(id); // Return the user data
+function getUser(token) {
+    try {
+        return jwt.verify(token, secret);
+    } catch (error) {
+        return null;
+    }
 }
 
-module.exports = {
-    setUser,
-    getUser,
-};
+module.exports = { setUser, getUser };
