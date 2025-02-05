@@ -17,7 +17,7 @@ async function handlesignup(req, res) {
 
     const { email, password } = req.body;
 
-    if (!email || !password ) {
+    if (!email || !password) {
         console.log("Missing required fields!", req.body); // 🔍 Debugging line
         return res.status(400).json({ msg: "Error: Email, and Password are required" });
     }
@@ -53,19 +53,20 @@ async function handlelogin(req, res) {
     try {
         const user = await SignupDetail.findOne({ email });
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            console.log("Invalid email or password");  // 🔍 Debugging line
-            return res.render("login", { error: "Invalid email or password" });
+            // Pass the error message to the view (login.ejs)
+            return res.render("login", { error: "Incorrect email or password" });
         }
 
         const token = setUser(user._id, user);
         res.cookie("uid", token, { httpOnly: true });
 
-        console.log("User authenticated! Redirecting..."); // 🔍 Debugging line
-        return res.redirect("/"); // ✅ Redirecting to home
+        console.log("User authenticated! Token:", token);  // ✅ Debugging line
+        console.log("User role:", user.roles);  // ✅ Debugging line
+
+        return res.redirect("/");
 
     } catch (error) {
-        console.error("Login error:", error);
-        return res.status(500).json({ error: "Internal Server Error" });
+        res.render('login', { error: 'Invalid email or password' });
     }
 }
 

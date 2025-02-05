@@ -2,41 +2,62 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <%- include('./partials/head') %>
     <!-- Tailwind CSS CDN Link -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        window.onload = function() {
+            const alert = document.getElementById('alert');
+            if (alert) {
+                setTimeout(function() {
+                    alert.style.display = 'none';
+                }, 3000); // 3000ms = 3 seconds
+            }
+        };
+    </script>
 </head>
 
 <body class="bg-gray-100 font-sans flex items-center justify-center min-h-screen">
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-        <h1 class="text-3xl font-semibold text-center text-indigo-600 mb-6">Login</h1>
+        <h1 class="text-3xl font-semibold text-center text-blue-600 mb-6">Login</h1>
 
-        <form method="post" action="/user/login" class="space-y-4"> <!-- Updated form action here -->
-            <div>
+        <!-- Show Error if exists -->
+        <% if (locals.error) { %>
+            <div id="alert" class="alert alert-danger text-red-600 mb-4 text-center">
+                <%= locals.error %>
+            </div>
+        <% } %>
+
+        <!-- Login Form -->
+        <form method="post" action="/user/login" class="space-y-4">
+            <div class="form-group">
                 <label for="email" class="block text-gray-700">Email</label>
                 <input type="text" name="email" id="email" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
-            <div>
+            <div class="form-group">
                 <label for="password" class="block text-gray-700">Password</label>
                 <input type="password" name="password" id="password" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div class="text-center">
                 <button type="submit"
-                    class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Login
                 </button>
             </div>
         </form>
 
-        <div class="text-center mt-6">
-            <span>Don't have an account? </span> <a href="/user/signup"
-                class="text-indigo-500 hover:text-indigo-700">Sign up here</a>
+        <!-- Sign-Up Redirect Section -->
+        <div class="text-center mt-4">
+            <p class="text-gray-600">Don't have an account? 
+                <a href="/user/signup" class="text-blue-600 hover:text-blue-700">Sign up here</a>
+            </p>
         </div>
     </div>
+
+    <%- include('./partials/body') %>
+
 </body>
 
 </html>

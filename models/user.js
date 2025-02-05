@@ -6,8 +6,8 @@ const signupSchema = new mongoose.Schema({
         required: true
     },
     email: {
-        required: true,
         type: String,
+        required: true,
         unique: true
     },
     password: {
@@ -19,6 +19,7 @@ const signupSchema = new mongoose.Schema({
         default: "NORMAL"
     },
 }, { timestamps: true });
+
 
 const SignupDetail = mongoose.model("SignupDetail", signupSchema);
 
